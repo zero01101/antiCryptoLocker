@@ -1,0 +1,52 @@
+installation/packaging:
+
+so here's how i set up a distributable package or whatever you want to call it
+
+build the solution; 3 projects
+
+copy the respective binaries into a directory
+
+rename hithere.exe to ht.dat
+
+i don't know why i thought that would be a good idea, and i apologize.  fork it if you care to fix it.
+
+locktest copies the ht.dat to %appdata%\ht.exe and attempts to run it, then deletes it.
+
+------
+
+how it works:
+
+so antiCryptoLocker.exe sets a bunch of registry values in HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\safer\codeidentifiers
+it then makes a set of keys where .exes cannot run from for 9 common "unsafe" paths:
+%appdata%\*.exe
+%localappdata%\*.exe
+%userprofile%\AppData\Local\Temp\*.exe
+%userprofile%\AppData\Local\Temp\wz*\*.exe
+%userprofile%\AppData\Local\Temp\7z*\*.exe
+%userprofile%\AppData\Local\Temp\*.zip\*.exe
+%userprofile%\AppData\Local\Temp\rar*\*.exe
+%appdata%\*\*.exe
+%localappdata%\*\*.exe
+
+------
+
+operation instructions:
+
+make the "distributable" as mentioned above.  the final directory should have antiCryptoLocker.exe, lockTest.exe, and ht.dat.
+
+run locktest - if the test button results in a hello world, it's not locked down and you'll be notified.
+
+run anticryptolocker as administrator - click "lockdown" and reboot to apply policy.
+
+run locktest again - it should fail to run.  a simple, nonexhaustive test but you get the idea.
+
+to unlock .exe paths just run anticryptolocker as administrator and click "unlock" and reboot
+
+------
+
+compatibility:
+
+windows xp through 8 (tested against 7) - HOME EDITIONS ONLY - see note below*
+.net framework 2.0 and above
+
+*IF YOU HAVE GROUP POLICIES ENFORCED THAT INCLUDE SOFTWARE RESTRICTION POLICIES THIS TOOL WILL LIKELY NOT WORK AS EXPECTED - THIS IS INTENDED FOR NON-PROFESSIONAL EDITIONS OF WINDOWS THAT LACK GROUP POLICY EDITORS OR FOR USERS THAT DON'T CARE TO USE THEM.  no warranty is implied, use at your own risk, any bad stuff that happens is your fault, blah blah.
